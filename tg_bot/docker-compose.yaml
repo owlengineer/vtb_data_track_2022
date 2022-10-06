@@ -1,0 +1,9 @@
+version: "3.3"
+
+services:
+  tg_bot:
+    build: ./bot
+    network_mode: "host"
+    container_name: tg-bot
+    environment:
+      - "ARS_BOT_TOKEN=${ARS_BOT_TOKEN}"
