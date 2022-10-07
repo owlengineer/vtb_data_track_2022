@@ -1,32 +1,41 @@
-from telethon.client import TelegramClient
 import json
+from telethon.client import TelegramClient
+from datetime import datetime
+from telethon.tl.types import InputMessagesFilterPhotos
+from emoji.core import replace_emoji
 
-channels = ['https://t.me/rian_ru', 'rbc_news'] # URL or tg name
-api_id = ''                             # From https://my.telegram.org/
+def remove_emoji(text):
+    return replace_emoji(text)
+
+# URLs or tg names
+channels = ["https://t.me/consultant_plus", "https://t.me/MinEconomyrf", "https://t.me/cbrrf", "https://t.me/eglavbukru",
+            "https://t.me/MoscowExchangeOfficial", "https://t.me/garantnews", "https://t.me/klerkonline", "https://t.me/nalog_gov_ru"]
+api_id = ''                                                                                         # From https://my.telegram.org/
 api_hash = ''
 
-client = TelegramClient('test_session',
-                    api_id,
-                    api_hash)
-client.start()
 all_messages = {}
 async def main():
     for channel in channels:
         channel_entity= await client.get_entity(channel)
-        messages = await client.get_messages(channel_entity, limit=100)
         all_messages[channel] = []
-        for x in messages:
-            msg = {
-                'message': x.message,
-                'date': x.date.timestamp(),
-                'views': x.views,
-                'forwards': x.forwards,
-                # 'reactions': x.reactions
-            }
-            all_messages[channel].append(msg)
+        async for message in client.iter_messages(channel_entity, filter=InputMessagesFilterPhotos):
+            if message.message == "":
+                continue
+            if message.date.timestamp() < datetime(year=2020, month=1, day=1).timestamp():
+                break
+            text = remove_emoji(message.message)
+            all_messages[channel].append({  'message': text,
+                                            'source': channel,
+                                            'date': message.date.timestamp(),
+                                            'views': message.views
+                                        })
+        print(f"{channel=} ended")
+        
 
-
-with client:
-    client.loop.run_until_complete(main())
-res = json.dumps(all_messages, ensure_ascii=False, indent=4).encode('utf8')
-print(res.decode())
+if __name__ == "__main__":
+    client = TelegramClient('test_session', api_id, api_hash)
+    client.start()
+    with client:
+        client.loop.run_until_complete(main())
+    with open("tg_news.json", "w") as file:
+        json.dump(all_messages, file, ensure_ascii=False, indent=4)
