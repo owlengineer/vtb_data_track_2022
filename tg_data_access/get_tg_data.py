@@ -10,13 +10,15 @@ def remove_emoji(text):
 
 # URLs or tg names
 channels = ["https://t.me/consultant_plus", "https://t.me/MinEconomyrf", "https://t.me/cbrrf", "https://t.me/eglavbukru",
-            "https://t.me/MoscowExchangeOfficial", "https://t.me/garantnews", "https://t.me/klerkonline", "https://t.me/nalog_gov_ru"]
+            "https://t.me/MoscowExchangeOfficial", "https://t.me/garantnews", "https://t.me/klerkonline", "https://t.me/nalog_gov_ru",
+            "https://t.me/mintsifry", "https://t.me/SberInvestments", "https://t.me/minfin", "https://t.me/centralbank_russia",
+            "https://t.me/investfuture", "https://t.me/markettwits"]
 api_id = ''                                                                                         # From https://my.telegram.org/
 api_hash = ''
 
 all_messages = {}
 async def main():
-    data = pd.DataFrame(columns=["message", "source", "date", "viesws"])
+    data = pd.DataFrame(columns=["message", "source", "date", "views"])
     msg_list = []
     for channel in channels:
         channel_entity= await client.get_entity(channel)
@@ -24,7 +26,7 @@ async def main():
         async for message in client.iter_messages(channel_entity, filter=InputMessagesFilterPhotos):
             if message.message == "":
                 continue
-            if message.date.timestamp() < datetime(year=2020, month=1, day=1).timestamp():
+            if message.date.timestamp() < datetime(year=2019, month=1, day=1).timestamp():
                 break
             text = remove_emoji(message.message)
             msg_list.append({'message': text,
