@@ -1,8 +1,8 @@
 version: "3.3"
 
 services:
-  tg_bot:
+  news_bot:
     build: src/
     ports:
       - "8080:5000"
-    container_name: xbcdata
+    container_name: xbcdata_news_bot
