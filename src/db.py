@@ -2,7 +2,7 @@ from typing import List, Dict
 
 from constants import DIRECTOR_GENERAL, ACCOUNTANT, NAME_OF_ROLE
 
-# It the easiest implementation of db :)
+# It's the easiest implementation of db :)
 DB: Dict[str, Dict[str, List[str]]] = {
     ACCOUNTANT: {
         NAME_OF_ROLE: ["бухгалтер", "бух", "accountant"]
