@@ -26,15 +26,7 @@ API -- набор http GET-запросов:
 
 Роуты сервиса прописаны тут -- https://github.com/owlengineer/vtb_data_track_2022/blob/main/src/api.py
 
-
-## Команда (github-аккаунты)
-
-* [Gavrilov Andrew](https://github.com/AndrewGavril) 
-* [Glazunov Sergey](https://github.com/light5551) 
-* [Yaroslav Gosudarkin](https://github.com/DarkFlink) 
-
-
-## Other
+## Материалы
 
 google drive - https://drive.google.com/drive/u/0/folders/1u2syZI7JopDamVcQ3VI3CQYuBeRW6obs
  
