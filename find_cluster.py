@@ -7,13 +7,20 @@ import pickle
 from rutermextract import TermExtractor
 from pathlib import Path
 from playground import clear_df
-embedder = SentenceTransformer('distilbert-base-nli-mean-tokens')
+
+BERT_MODEL = None
 
 
+def get_bert_model():
+    global BERT_MODEL
+    if not BERT_MODEL:
+        BERT_MODEL = SentenceTransformer('distilbert-base-nli-mean-tokens')
+    return BERT_MODEL
 
+embedder = get_bert_model()
 
 my_file = Path("./embeddings.pickle")
-corpus_df = pd.read_csv('tg.csv')
+corpus_df = pd.read_csv('algorithms/utils/tg.csv')
 clear_df(corpus_df)
 corpus = corpus_df['message'].to_list()
 if my_file.is_file():
@@ -24,12 +31,9 @@ else:
     # Corpus with example sentence
     corpus_embeddings = embedder.encode(corpus)
     # Normalize the embeddings to unit length
-    corpus_embeddings = corpus_embeddings /  np.linalg.norm(corpus_embeddings, axis=1, keepdims=True)
+    corpus_embeddings = corpus_embeddings / np.linalg.norm(corpus_embeddings, axis=1, keepdims=True)
     with open(my_file, 'wb') as file:
         corpus_embeddings = pickle.dump(corpus_embeddings, file, pickle.HIGHEST_PROTOCOL)
-    
-
-
 
 # Perform kmean clustering
 clustering_model = AgglomerativeClustering(n_clusters=None, distance_threshold=0.4)
