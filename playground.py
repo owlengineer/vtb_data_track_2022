@@ -1,5 +1,5 @@
 def clear_df(df):
-  import
+  import re
   for i in range(len(df['message'])):
     df["message"][i] = df["message"][i].lower()
     df["message"][i] = re.sub('[a-zA-Z0-9]', '', df["message"][i])
