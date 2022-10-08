@@ -1,4 +1,5 @@
-import json
+import csv
+import pandas as pd
 from telethon.client import TelegramClient
 from datetime import datetime
 from telethon.tl.types import InputMessagesFilterPhotos
@@ -15,6 +16,8 @@ api_hash = ''
 
 all_messages = {}
 async def main():
+    data = pd.DataFrame(columns=["message", "source", "date", "viesws"])
+    msg_list = []
     for channel in channels:
         channel_entity= await client.get_entity(channel)
         all_messages[channel] = []
@@ -24,12 +27,16 @@ async def main():
             if message.date.timestamp() < datetime(year=2020, month=1, day=1).timestamp():
                 break
             text = remove_emoji(message.message)
-            all_messages[channel].append({  'message': text,
-                                            'source': channel,
-                                            'date': message.date.timestamp(),
-                                            'views': message.views
-                                        })
+            msg_list.append({'message': text,
+                             'source': channel,
+                             'date': message.date.timestamp(),
+                             'views': message.views
+                            })
         print(f"{channel=} ended")
+    data = pd.DataFrame(msg_list, columns=['message', 'source', 'date', 'views'])
+    data.to_csv("tg_news.csv")
+        
+
         
 
 if __name__ == "__main__":
@@ -37,5 +44,3 @@ if __name__ == "__main__":
     client.start()
     with client:
         client.loop.run_until_complete(main())
-    with open("tg_news.json", "w") as file:
-        json.dump(all_messages, file, ensure_ascii=False, indent=4)
