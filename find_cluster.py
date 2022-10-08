@@ -4,6 +4,7 @@ from sklearn.decomposition import PCA
 import numpy as np
 import pandas as pd
 import pickle
+from rutermextract import TermExtractor
 from pathlib import Path
 from playground import clear_df
 embedder = SentenceTransformer('distilbert-base-nli-mean-tokens')
@@ -31,7 +32,7 @@ else:
 
 
 # Perform kmean clustering
-clustering_model = AgglomerativeClustering(n_clusters=None, affinity='cosine', linkage='average', distance_threshold=0.1) #, affinity='cosine', linkage='average', distance_threshold=0.4)
+clustering_model = AgglomerativeClustering(n_clusters=None, distance_threshold=0.4)
 clustering_model.fit(corpus_embeddings)
 cluster_assignment = clustering_model.labels_
 clustered_sentences = {}
@@ -41,8 +42,16 @@ for sentence_id, cluster_id in enumerate(cluster_assignment):
 
     clustered_sentences[cluster_id].append(corpus[sentence_id])
 
+result_clusters = {}
+term_extractor = TermExtractor()
 for i, cluster in clustered_sentences.items():
-    print("Cluster ", i+1)
-    print(cluster)
-    print("")
+    keywords = []
+    for keyword in term_extractor(''.join(cluster)):
+        if keyword.count < 3:
+            continue
+        keywords.append((keyword.normalized, keyword.count))
+    if len(keywords) != 0:
+        result_clusters[i] = {"keywords": keywords, "texts": cluster}
+
+print(result_clusters)
 # clusters = util.community_detection(corpus_embeddings, min_community_size=25, threshold=0.75)
