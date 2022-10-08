@@ -1,0 +1,8 @@
+version: "3.3"
+
+services:
+  tg_bot:
+    build: src/
+    ports:
+      - "8080:5000"
+    container_name: xbcdata
