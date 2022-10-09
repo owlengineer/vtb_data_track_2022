@@ -22,6 +22,7 @@ class Pipeline:
         clustered_sentences = create_map_of_cluster(self.labels, self.raw_msgs)
         self.result_clusters = get_keywords_from_cluster(clustered_sentences)
         print("Init done")
+        self.process()
 
     def update_res(self, df):
         clear_df(df)
@@ -49,7 +50,7 @@ class Pipeline:
         return [""]
 
     def get_trends(self):
-        return [""]
+        return
 
     def get_insights(self):
         return []
