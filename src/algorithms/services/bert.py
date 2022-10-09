@@ -18,6 +18,7 @@ def save(embedder):
 
 
 def load(file_name: str):
+    # TODO: CHANGE PATH FOR DOCKER!!!!!!!!
     file_path = Path(f"src/algorithms/services/{file_name}")
     if file_path.is_file():
         with open(file_path, 'rb') as file:

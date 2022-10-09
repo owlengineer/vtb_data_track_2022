@@ -2,7 +2,7 @@ version: "3.3"
 
 services:
   news_bot:
-    build: src/
+    build: .
     ports:
       - "8080:5000"
     container_name: xbcdata_news_bot

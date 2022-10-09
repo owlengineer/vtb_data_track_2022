@@ -1,2 +1,9 @@
-Flask
 pandas~=1.5.0
+sentence_transformers
+telethon==1.25.2
+emoji==2.1.0
+Flask~=2.2.2
+pandas~=1.5.0
+numpy~=1.23.3
+scikit-learn~=1.1.2
+rutermextract~=0.3
