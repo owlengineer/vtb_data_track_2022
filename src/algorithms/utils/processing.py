@@ -17,7 +17,7 @@ def clear_df(df):
 
 
 def get_data():
-    df = pd.read_csv('utils/tg.csv')
+    df = pd.read_csv('src/algorithms/utils/tg.csv')
     clear_df(df)
     print(df.head())
     return df

@@ -1,7 +1,7 @@
 import pickle
 from pathlib import Path
 
-from services.constants import BERT_MODEL_FILENAME
+from algorithms.services.constants import BERT_MODEL_FILENAME
 
 BERT_MODEL = None
 
@@ -18,7 +18,7 @@ def save(embedder):
 
 
 def load(file_name: str):
-    file_path = Path(f"services/{file_name}")
+    file_path = Path(f"src/algorithms/services/{file_name}")
     if file_path.is_file():
         with open(file_path, 'rb') as file:
             unpickler = pickle.Unpickler(file)

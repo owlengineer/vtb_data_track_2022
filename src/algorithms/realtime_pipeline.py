@@ -3,12 +3,12 @@ from time import sleep
 import pandas as pd
 import numpy as np
 from sentence_transformers import SentenceTransformer
-from services.constants import CHANNELS
-from services.bert import get_bert_embedding_model
-from services.clusterization import fit_cluster, create_map_of_cluster, get_keywords_from_cluster
-from utils.processing import get_data, clear_df
+from algorithms.services.constants import CHANNELS
+from algorithms.services.bert import get_bert_embedding_model
+from algorithms.services.clusterization import fit_cluster, create_map_of_cluster, get_keywords_from_cluster
+from algorithms.utils.processing import get_data, clear_df
 from emoji.core import replace_emoji
-from services.tg_news_updater import TG_CLIENT
+
 
 class Pipeline:
     def __init__(self):
@@ -40,36 +40,27 @@ class Pipeline:
         # Update resulting clusters
         clustered_sentences = create_map_of_cluster(self.labels, self.raw_msgs)
         self.result_clusters = get_keywords_from_cluster(clustered_sentences)
+        self.process()
+
+    def process(self):
+        pass
+
+    def get_digest(self, role):
+        return [""]
+
+    def get_trends(self):
+        return [""]
+
+    def get_insights(self):
+        return []
 
     def stop(self):
         self.stop = True
 
     async def start(self):
-        prev_list = []
-        while not self.stop:
-            msg_list = []
-            for channel in CHANNELS:
-                channel_entity= await TG_CLIENT.get_entity(channel)
-                async for message in TG_CLIENT.iter_messages(channel_entity, limit=10):
-                    if message.message == "" or message.message is None:
-                        continue
-                    text = replace_emoji(message.message)
-                    msg_list.append({'message': text,
-                             'source': channel,
-                             'date': message.date.timestamp(),
-                             'views': message.views
-                            })
-                    if msg_list[-1] in prev_list:
-                        break
-            if len(msg_list) == 0:
-                continue
-            prev_list = msg_list
-            data = pd.DataFrame(msg_list, columns=['message', 'source', 'date', 'views'])
-            self.update_res(data)
-            sleep(30)
+        pass
 
 
-
-if __name__=='__main__':
+if __name__ == '__main__':
     pipeline = Pipeline()
     TG_CLIENT.loop.run_until_complete(pipeline.start())
