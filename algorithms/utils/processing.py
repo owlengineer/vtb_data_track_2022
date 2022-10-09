@@ -4,7 +4,7 @@ import pandas as pd
 def clear_df(df):
     import re
     for i in range(len(df['message'])):
-        df["message"][i] = df["message"][i].lower()
+        df["message"][i] = str(df["message"][i]).lower()
         df["message"][i] = re.sub('[a-zA-Z0-9]', '', df["message"][i])
         df["message"][i] = df["message"][i].replace("\n", " ").replace('~', '').replace('?', '').replace("''",
                                                                                                          '').replace(

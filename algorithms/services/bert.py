@@ -1,7 +1,7 @@
 import pickle
 from pathlib import Path
 
-from constants import BERT_MODEL_FILENAME
+from services.constants import BERT_MODEL_FILENAME
 
 BERT_MODEL = None
 
